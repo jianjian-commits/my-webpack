@@ -56,6 +56,8 @@ module.exports = {
   output: {
     filename: "bound.js",
     path: path.resolve(__dirname, "dist"),
+    // 会给导入bound.js时候加上 /
+    // publicPath: '/dist'
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -70,10 +72,24 @@ module.exports = {
   ],
   module: {
     rules: [
+      // css-loader 是用来解析 css 中使用了 import 以及 scss less使用了 url的
       {
         test: /.css$/,
         use: ["style-loader", "css-loader"],
       },
+      {
+        test: /.scss$/,
+        use: ["style-loader", "css-loader", 'sass-loader'],
+      },
+      {
+        test: /.(less)$/,
+        use: ["style-loader", "css-loader", 'less-loader'],
+      },
     ],
   },
+  devServer: {
+    static: path.resolve(__dirname, 'public'),
+    port: 8000,
+    open: true,
+  }
 };
