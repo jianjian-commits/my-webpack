@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack",
-    "start": "webpack server"
+    "start": "cross-env NODE_ENV=production webpack server"
   },
   "keywords": [],
   "author": "",
@@ -16,11 +16,22 @@
     "webpack-cli": "^4.9.2"
   },
   "devDependencies": {
+    "@babel/core": "^7.17.9",
+    "@babel/preset-env": "^7.16.11",
+    "@babel/preset-react": "^7.16.7",
+    "babel-eslint": "^10.1.0",
+    "babel-loader": "^8.2.4",
     "clean-webpack-plugin": "^4.0.0",
     "css-loader": "^6.7.1",
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-loader": "^4.0.2",
+    "eslint-plugin-import": "^2.26.0",
     "html-webpack-plugin": "^5.5.0",
     "less": "^4.1.2",
     "less-loader": "^10.2.0",
+    "postcss-loader": "^6.2.1",
+    "postcss-preset-env": "^7.4.3",
     "style-loader": "^3.3.1",
     "webpack-dev-server": "^4.8.1"
   }

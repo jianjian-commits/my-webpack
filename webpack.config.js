@@ -40,8 +40,6 @@ const { DefinePlugin } = require("webpack");
 //   };
 // };
 
-
-
 // 我们可以像上面一样写成一个函数去判断使用那种模式
 // 也可以这样更方便的控制 package.json 中设置一个环境变量NODE_ENV=xxx,
 // 但是这个环境变量的不同平台设置方法可能不一样，于是我们需要一个跨平台的办法去设置
@@ -72,24 +70,57 @@ module.exports = {
   ],
   module: {
     rules: [
+      {
+        test: /.jsx?$/,
+        use: {
+          loader: "babel-loader",
+          options: {
+            presets: ["@babel/preset-env", "@babel/preset-react"],
+            plugins: [],
+          },
+        },
+      },
+      {
+        test: /.jsx?$/,
+        loader: "eslint-loader",
+        enforce: "pre",
+        options: {
+          fix: true,
+        },
+        exclude: /node_modules/,
+      },
       // css-loader 是用来解析 css 中使用了 import 以及 scss less使用了 url的
       {
         test: /.css$/,
-        use: ["style-loader", "css-loader"],
+        use: [
+          "style-loader",
+          {
+            loader: "css-loader",
+            options: {
+              url: true, // 处理css中使用的url
+              import: true, // 是否要处理代码中的import关键字
+              modules: false, // 是否对样式进行模块化处理 类似于 vue中的 scoped
+              sourceMap: false, // 是否生成sourceMap
+              esModule: false,
+              importLoaders: 2, // 在处理引入@import的css前 需要使用几个loader进行对它的处理 不写或者设置为true都无效
+            },
+          },
+          "postcss-loader",
+        ],
       },
       {
         test: /.scss$/,
-        use: ["style-loader", "css-loader", 'sass-loader'],
+        use: ["style-loader", "css-loader", "sass-loader", "postcss-loader"],
       },
       {
         test: /.(less)$/,
-        use: ["style-loader", "css-loader", 'less-loader'],
+        use: ["style-loader", "css-loader", "less-loader", "postcss-loader"],
       },
     ],
   },
   devServer: {
-    static: path.resolve(__dirname, 'public'),
+    static: path.resolve(__dirname, "public"),
     port: 8000,
     open: true,
-  }
+  },
 };
